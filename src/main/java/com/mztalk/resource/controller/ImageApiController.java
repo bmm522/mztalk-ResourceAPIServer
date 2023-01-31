@@ -7,6 +7,7 @@ import com.mztalk.resource.service.DeleteImageService;
 import com.mztalk.resource.service.InsertImageService;
 import com.mztalk.resource.service.SelectImageService;
 import com.mztalk.resource.service.UpdateImageService;
+import com.mztalk.resource.service.impl.InsertImageServiceImpl;
 import io.swagger.annotations.*;
 import jdk.swing.interop.SwingInterOpUtils;
 import lombok.RequiredArgsConstructor;
@@ -51,19 +52,11 @@ public class ImageApiController {
     @ApiOperation(value="이미지 다중 업로드", notes = "이미지를 여러장 보냅니다. 맨 첫번째 사진은 자동으로 레벨이 0으로 지정됩니다.", response = ResponseData.class)
     @PostMapping(value = "/images",  consumes = "multipart/form-data",  produces = "application/json")
     public ResponseEntity<?> insertImages(@RequestParam("image") List<MultipartFile> multipartFileList, ImagesRequestDto imagesRequestDto){
-        System.out.println("controller : " + multipartFileList);
-        System.out.println("controller : " + imagesRequestDto.getBNo());
-        System.out.println("controller : " + imagesRequestDto.getServiceName());
-
-
         return insertImageService.insertImages(multipartFileList, imagesRequestDto);
     }
 
     // 메인 이미지 업로드
     @ApiOperation(value="메인사진 업로드", notes = "메인이미지로 설정하고자 하는 곳에 요청을 보내면 자동으로 메인사진으로 등록됩니다.", consumes = "text/html", response = ResponseData.class)
- //           @ApiImplicitParam(name="image", value="이미지", dataType="MultipartFile", paramType = "param")
-//            @ApiImplicitParam(name="bNo", value="글번호", dataType = "String", paramType = "param")
-
     @PostMapping(value = "/main-image",  consumes = "multipart/form-data",  produces = "application/json")
     public ResponseEntity<?> insertMainImage(@RequestParam("image")MultipartFile multipartFile, ImagesRequestDto imagesRequestDto){
         return insertImageService.insertMainImage(multipartFile, imagesRequestDto);
